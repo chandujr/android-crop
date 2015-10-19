@@ -246,7 +246,18 @@ public class Crop {
     }
 
     private static Intent getImagePicker() {
-        return new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
+        Intent intent = new Intent();
+
+    	if (Build.VERSION.SDK_INT < 19) {
+    		intent.setAction(Intent.ACTION_GET_CONTENT);
+    		intent.setType("image/*");
+    	} else {
+    		intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+    	}
+
+    	return intent;
     }
 
     private static void showImagePickerError(Context context) {
